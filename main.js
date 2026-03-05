@@ -81,7 +81,7 @@ let numbers = [];
 
 function loadNumbers() {
   if (fs.existsSync("number.txt")) {
-    numbers = fs.readFileSync("number.txt", "utf-8")
+    numbers = fs.readFileSync("./number.txt", "utf-8")
       .split("\n")
       .filter(Boolean);
   }
