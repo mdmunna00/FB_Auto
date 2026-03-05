@@ -109,7 +109,7 @@ const DEBUG = true;  // true = debug mode | false = production mode
   rl.close();
 
   const THREADS = parseInt(threadInput) || 1;
-  const URL = "www.test.com";
+  const URL = "https://www.facebook.com/reg/?;
 
   let successCount = 0;
   let failCount = 0;
