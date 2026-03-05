@@ -11,7 +11,9 @@ const rl = readline.createInterface({
 });
 
 rlStop.on("line", (input) => {
-  if (input.trim().toLowerCase() === "stop") {
+  const cmd = input.trim().toLowerCase();
+
+  if (cmd === "stop") {
     console.log("🛑 Script stopped by user");
     process.exit(0);
   }
