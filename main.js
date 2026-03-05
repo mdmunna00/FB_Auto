@@ -106,7 +106,7 @@ async function getNextNumber() {
 
 (async () => {
 
-const DEBUG = true;  // true = debug mode | false = production mode
+const DEBUG = false;  // true = debug mode | false = production mode
 
   const threadInput = await ask("How many threads? ");
   rl.close();
@@ -125,8 +125,8 @@ const DEBUG = true;  // true = debug mode | false = production mode
     const mobile = await getNextNumber();
 
     const browser = await chromium.launch({
-      headless: false,
-slowMo: 1000,
+      headless: true,
+
       args: ["--start-maximized"]
     });
 
