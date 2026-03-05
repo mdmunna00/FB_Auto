@@ -10,14 +10,22 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+
+// STOP command system
+const rlStop = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 rlStop.on("line", (input) => {
   const cmd = input.trim().toLowerCase();
-
   if (cmd === "stop") {
     console.log("🛑 Script stopped by user");
     process.exit(0);
   }
 });
+
+
 
 function ask(q) {
   return new Promise(res => rl.question(q, ans => res(ans)));
