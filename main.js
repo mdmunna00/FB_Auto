@@ -2,6 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const readline = require('readline');
 const { handleVerify } = require("./verify");
+const { getRandomProfile } = require("./useragent");
 
 // ================= MENU =================
 
@@ -121,7 +122,8 @@ const DEBUG = false;  // true = debug mode | false = production mode
   loadNumbers();
 
   async function runThread(id) {
-
+    
+   const profile = getRandomProfile();
     const mobile = await getNextNumber();
 
     const browser = await chromium.launch({
@@ -130,7 +132,13 @@ const DEBUG = false;  // true = debug mode | false = production mode
       args: ["--start-maximized"]
     });
 
-    const context = await browser.newContext({ viewport: null });
+    const context = await browser.newContext({ 
+      
+      userAgent: profile.userAgent,
+  locale: profile.locale,
+  timezoneId: profile.timezoneId,
+  viewport: profile.viewport });
+    
     const page = await context.newPage();
 
     try {
