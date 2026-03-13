@@ -20,6 +20,8 @@ async function handleVerify(page) {
 
   if (await didntGetBtn.count() > 0) {
 
+    await page.waitForTimeout(2000); // delay
+    
     await didntGetBtn.first().click();
     console.log("✅ Clicked: I didn't get the code");
 
@@ -31,6 +33,9 @@ async function handleVerify(page) {
     const resendBtn = page.locator("text=/resend confirmation code/i");
 
     if (await resendBtn.count() > 0) {
+
+      await page.waitForTimeout(2000); // delay
+      
       await resendBtn.first().click();
       console.log("✅ Clicked: Resend confirmation code");
     }
