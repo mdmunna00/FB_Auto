@@ -1,63 +1,54 @@
 @echo off
-title Automation Setup
+title Playwright Setup
 
-echo ===============================
+echo =========================
 echo Checking Node.js
-echo ===============================
+echo =========================
 
 node -v >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
-echo Node.js not found. Installing Node.js...
-powershell -Command "Invoke-WebRequest https://nodejs.org/dist/v20.11.1/node-v20.11.1-x64.msi -OutFile node.msi"
-msiexec /i node.msi /quiet /norestart
+echo Node.js not installed!
+echo Install Node.js from https://nodejs.org
+pause
+exit
 ) ELSE (
-echo Node.js already installed
+echo Node.js OK
 )
 
 echo.
-echo ===============================
+echo =========================
 echo Checking Git
-echo ===============================
+echo =========================
 
 git --version >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
-echo Git not found. Installing Git...
-powershell -Command "Invoke-WebRequest https://github.com/git-for-windows/git/releases/latest/download/Git-64-bit.exe -OutFile git.exe"
-start /wait git.exe /VERYSILENT
+echo Git not installed!
+echo Install Git from https://git-scm.com
+pause
+exit
 ) ELSE (
-echo Git already installed
+echo Git OK
 )
 
 echo.
-echo ===============================
-echo Cloning Project
-echo ===============================
-
-IF NOT EXIST project (
-git clone https://github.com/username/project.git
-)
-
-cd project
-
-echo.
-echo ===============================
-echo Installing Playwright
-echo ===============================
+echo =========================
+echo Installing Packages
+echo =========================
 
 npm install playwright
+npm install playwright-extra
+npm install puppeteer-extra-plugin-stealth
 
 echo.
-echo ===============================
+echo =========================
 echo Installing Chromium
-echo ===============================
+echo =========================
 
 npx playwright install chromium
 
 echo.
-echo ===============================
-echo Starting Automation
-echo ===============================
-
-node main.js
+echo =========================
+echo Setup Finished
+echo =========================
 
 pause
