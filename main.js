@@ -1,4 +1,6 @@
-const { chromium } = require('playwright');
+const { chromium } = require("playwright-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+chromium.use(StealthPlugin());
 const fs = require('fs');
 const readline = require('readline');
 const { handleVerify } = require("./verify");
@@ -129,7 +131,8 @@ const DEBUG = false;  // true = debug mode | false = production mode
     const browser = await chromium.launch({
       headless: true,
 
-      args: ["--start-maximized"]
+      args: ["--disable-blink-features=AutomationControlled",
+    "--start-maximized"]
     });
 
     const context = await browser.newContext({ 
@@ -138,6 +141,29 @@ const DEBUG = false;  // true = debug mode | false = production mode
   locale: profile.locale,
   timezoneId: profile.timezoneId,
   viewport: profile.viewport });
+
+
+// 👇 এখানে addInitScript
+await context.addInitScript(profile => {
+
+  Object.defineProperty(navigator, "platform", {
+    get: () => profile.platform || "Win32"
+  });
+
+  Object.defineProperty(navigator, "webdriver", {
+    get: () => undefined
+  });
+
+  Object.defineProperty(navigator, "hardwareConcurrency", {
+    get: () => profile.hardwareConcurrency || 4
+  });
+
+  Object.defineProperty(navigator, "deviceMemory", {
+    get: () => profile.deviceMemory || 8
+  });
+
+}, profile);
+    
     
     const page = await context.newPage();
 
