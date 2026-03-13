@@ -213,7 +213,7 @@ try {
   await genderCombo.click();
   await page.waitForTimeout(500);
 
-   page.locator('div[role="option"]', {
+  await page.locator('div[role="option"]', {
     hasText: new RegExp(`^${gender}$`, "i")
   }).first().click();
 
