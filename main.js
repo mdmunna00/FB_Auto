@@ -125,7 +125,6 @@ const DEBUG = false;  // true = debug mode | false = production mode
 
   async function runThread(id) {
     
-   const profile = getRandomProfile();
     const mobile = await getNextNumber();
 
     const browser = await chromium.launch({
@@ -134,7 +133,19 @@ const DEBUG = false;  // true = debug mode | false = production mode
       args: ["--disable-blink-features=AutomationControlled",
     "--start-maximized"]
     });
+    
+const profile = await getRandomProfile(browser);
 
+    // 🔥 DEBUG ONLY LOG
+if (DEBUG) {
+  console.log("\n🧠 Context Config:");
+  console.log("🌐 UserAgent :", profile.userAgent);
+  console.log("🌍 Locale    :", profile.locale);
+  console.log("🕒 Timezone  :", profile.timezoneId);
+  console.log("🖥️ Viewport  :", profile.viewport);
+  console.log("====================================\n");
+}
+    
     const context = await browser.newContext({ 
       
       userAgent: profile.userAgent,
@@ -166,7 +177,13 @@ await context.addInitScript(profile => {
     
     
     const page = await context.newPage();
-
+    
+// ✅ এখানে বসাও
+if (DEBUG) {
+  const ua = await page.evaluate(() => navigator.userAgent);
+  console.log("🌐 Real UA:", ua);
+}
+    
     try {
 
       await page.goto(URL, { waitUntil: "networkidle" });
