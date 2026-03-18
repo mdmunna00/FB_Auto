@@ -1,33 +1,40 @@
-function getRandomProfile() {
+function buildUA(version) {
+  return `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${version} Safari/537.36`;
+}
 
+async function getRandomProfile(browser) {
+
+  // 🔥 Browser version detect (FIXED)
+  const versionRaw = await browser.version();
+
+  // 👉 regex দিয়ে version extract (safe)
+  let versionMatch = versionRaw.match(/\d+\.\d+\.\d+\.\d+/);
+  let version = versionMatch ? versionMatch[0] : "120.0.0.0";
+
+  // 🔥 profiles (same as yours)
   const profiles = [
 
     {
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/121.0.0.0 Safari/537.36",
       locale: "en-US",
       timezoneId: "America/New_York"
     },
 
     {
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
       locale: "en-GB",
       timezoneId: "Europe/London"
     },
 
     {
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/119.0.0.0 Safari/537.36",
       locale: "en-BD",
       timezoneId: "Asia/Dhaka"
     },
 
     {
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/118.0.0.0 Safari/537.36",
       locale: "en-US",
       timezoneId: "America/Chicago"
     },
 
     {
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117.0.0.0 Safari/537.36",
       locale: "en-US",
       timezoneId: "America/Los_Angeles"
     }
@@ -48,7 +55,9 @@ function getRandomProfile() {
   const viewport = viewports[Math.floor(Math.random() * viewports.length)];
 
   return {
-    ...profile,
+    userAgent: buildUA(version), // 🔥 এখন আর undefined হবে না
+    locale: profile.locale,
+    timezoneId: profile.timezoneId,
     viewport
   };
 }
