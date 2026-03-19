@@ -110,11 +110,10 @@ async function getNextNumber() {
 
 (async () => {
 
-const DEBUG = false;  // true = debug mode | false = production mode
+const DEBUG = true;  // true = debug mode | false = production mode
 
   const threadInput = await ask("How many threads? ");
   rl.close();
-
   const THREADS = parseInt(threadInput) || 1;
   const URL = "https://www.facebook.com/reg/?";
 
@@ -129,10 +128,9 @@ const DEBUG = false;  // true = debug mode | false = production mode
     const mobile = await getNextNumber();
 
     const browser = await chromium.launch({
-      headless: true,
-
-      args: ["--disable-blink-features=AutomationControlled",
-    "--start-maximized"]
+     headless: false,
+slowMo: 1000,
+      args: ["--start-maximized"]
     });
     
 const profile = await getRandomProfile(browser);
@@ -152,7 +150,9 @@ if (DEBUG) {
       userAgent: profile.userAgent,
   locale: profile.locale,
   timezoneId: profile.timezoneId,
-  viewport: profile.viewport });
+  // viewport: profile.viewport 
+viewport: null
+});
 
 
 // 👇 এখানে addInitScript
@@ -178,8 +178,7 @@ await context.addInitScript(profile => {
     
     
     const page = await context.newPage();
-
-
+    
 if (DEBUG) {
   const check = await page.evaluate(() => {
     return {
@@ -199,8 +198,6 @@ if (DEBUG) {
 }
 
 
-
-    
 // ✅ এখানে বসাও
 if (DEBUG) {
   const ua = await page.evaluate(() => navigator.userAgent);
@@ -211,6 +208,9 @@ if (DEBUG) {
 
       await page.goto(URL, { waitUntil: "networkidle" });
       await page.waitForTimeout(3000);
+
+await humanBehavior(page);
+await humanDelay(page);
 
       // ===== Cookie handler =====
       for (const frame of page.frames()) {
@@ -242,6 +242,9 @@ await page.waitForTimeout(1000);
       await selectFromCombo(page, /year/i, new RegExp(birth.year));
 
 await page.waitForTimeout(1000);
+
+await humanDelay(page);
+await humanBehavior(page);
 
 /// ================= GENDER =================
 try {
@@ -275,10 +278,18 @@ await page.waitForTimeout(1000);
 
 await page.waitForTimeout(1000);
 
+await humanDelay(page);
+
       await page.getByRole("textbox", { name: /password/i }).type(password,{ delay: 100});
+
+
 
       // Submit এর আগে delay
 await page.waitForTimeout(randomDelay());
+
+await humanBehavior(page);
+await humanDelay(page);
+
 
 // Submit click
 await page.getByRole("button", { name: /submit|sign/i }).click();
