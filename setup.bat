@@ -34,13 +34,31 @@ echo Init Project
 echo =========================
 
 npm init -y
+IF %ERRORLEVEL% NEQ 0 exit
 
 echo.
 echo =========================
-echo Installing Packages
+echo Installing Playwright
 echo =========================
 
-npm install playwright playwright-extra puppeteer-extra-plugin-stealth
+npm install playwright
+IF %ERRORLEVEL% NEQ 0 exit
+
+echo.
+echo =========================
+echo Installing Playwright Extra
+echo =========================
+
+npm install playwright-extra
+IF %ERRORLEVEL% NEQ 0 exit
+
+echo.
+echo =========================
+echo Installing Stealth Plugin
+echo =========================
+
+npm install puppeteer-extra-plugin-stealth
+IF %ERRORLEVEL% NEQ 0 exit
 
 echo.
 echo =========================
@@ -48,6 +66,7 @@ echo Installing Chromium
 echo =========================
 
 npx playwright install chromium
+IF %ERRORLEVEL% NEQ 0 exit
 
 echo.
 echo =========================
