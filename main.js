@@ -3,6 +3,7 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 chromium.use(StealthPlugin());
 const fs = require('fs');
 const readline = require('readline');
+const { humanBehavior, humanDelay, humanType, randomIdle } = require("./human");
 const { handleVerify } = require("./verify");
 const { getRandomProfile } = require("./useragent");
 
