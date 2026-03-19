@@ -6,7 +6,7 @@ const readline = require('readline');
 const { humanBehavior, humanDelay, humanType, randomIdle } = require("./human");
 const { handleVerify } = require("./verify");
 const { getRandomProfile } = require("./useragent");
-
+const { setupProxy, getProxy } = require("./proxy");
 // ================= MENU =================
 
 const rl = readline.createInterface({
@@ -117,6 +117,9 @@ const DEBUG = true;  // true = debug mode | false = production mode
   const THREADS = parseInt(threadInput) || 1;
   const URL = "https://www.facebook.com/reg/?";
 
+const useProxy = await setupProxy();
+
+
   let successCount = 0;
   let failCount = 0;
   let batchCount = 0;
@@ -127,12 +130,25 @@ const DEBUG = true;  // true = debug mode | false = production mode
     
     const mobile = await getNextNumber();
 
+const proxy = useProxy ? getProxy(id) : null;
+
     const browser = await chromium.launch({
      headless: false,
 slowMo: 1000,
+proxy: proxy || undefined,   // 👈 ADD THIS
       args: ["--start-maximized"]
     });
     
+
+// 👇 এখানে বসাও
+if (proxy) {
+  console.log(`🌐 Thread ${id} → Proxy: ${proxy.server}`);
+} else {
+  console.log(`❌ Thread ${id} → No Proxy`);
+}
+
+
+
 const profile = await getRandomProfile(browser);
 
     // 🔥 DEBUG ONLY LOG
