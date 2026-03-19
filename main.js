@@ -177,6 +177,28 @@ await context.addInitScript(profile => {
     
     
     const page = await context.newPage();
+
+
+if (DEBUG) {
+  const check = await page.evaluate(() => {
+    return {
+      webdriver: navigator.webdriver,
+      platform: navigator.platform,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: navigator.deviceMemory
+    };
+  });
+
+  console.log("\n🧪 InitScript Check:");
+  console.log("🤖 webdriver          :", check.webdriver);
+  console.log("💻 platform           :", check.platform);
+  console.log("⚙️ hardwareConcurrency:", check.hardwareConcurrency);
+  console.log("🧠 deviceMemory       :", check.deviceMemory);
+  console.log("====================================\n");
+}
+
+
+
     
 // ✅ এখানে বসাও
 if (DEBUG) {
