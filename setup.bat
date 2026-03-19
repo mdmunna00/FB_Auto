@@ -8,7 +8,6 @@ echo =========================
 node -v >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
 echo Node.js not installed!
-echo Install Node.js from https://nodejs.org
 pause
 exit
 ) ELSE (
@@ -23,7 +22,6 @@ echo =========================
 git --version >nul 2>&1
 IF %ERRORLEVEL% NEQ 0 (
 echo Git not installed!
-echo Install Git from https://git-scm.com
 pause
 exit
 ) ELSE (
@@ -32,12 +30,17 @@ echo Git OK
 
 echo.
 echo =========================
+echo Init Project
+echo =========================
+
+npm init -y
+
+echo.
+echo =========================
 echo Installing Packages
 echo =========================
 
-npm install playwright
-npm install playwright-extra
-npm install puppeteer-extra-plugin-stealth
+npm install playwright playwright-extra puppeteer-extra-plugin-stealth
 
 echo.
 echo =========================
